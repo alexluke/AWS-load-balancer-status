@@ -29,9 +29,12 @@ def elb_status():
 			'name': lb.name,
 			'instances': instances,
 			'redundant': True,
+			'serving': True,
 		}
 		if len(instances) < 2 or not all([i['up'] for i in instances]):
 			lb_status['redundant'] = False
+		if len([i['up'] for i in instances]) == 0:
+			lb_status['serving'] = False
 		
 		lbs.append(lb_status)
 	return render_template('elb_status.html', lbs=lbs)

@@ -9,6 +9,52 @@
           border-radius: @radius;
 }
 
+.opacity(@opacity) {
+  opacity: @opacity / 100;
+  filter: ~"alpha(opacity=@{opacity})";
+}
+
+.animation(@name, @duration, @iteration-count, @direction, @timing-function) {
+	-webkit-animation-name: @name;
+	-webkit-animation-duration: @duration;
+	-webkit-animation-iteration-count: @iteration-count;
+	-webkit-animation-direction: @direction;
+	-webkit-animation-timing-function: @timing-function;
+
+	-moz-animation-name: @name;
+	-moz-animation-duration: @duration;
+	-moz-animation-iteration-count: @iteration-count;
+	-moz-animation-direction: @direction;
+	-moz-animation-timing-function: @timing-function;
+
+	-ms-animation-name: @name;
+	-ms-animation-duration: @duration;
+	-ms-animation-iteration-count: @iteration-count;
+	-ms-animation-direction: @direction;
+	-ms-animation-timing-function: @timing-function;
+
+	-o-animation-name: @name;
+	-o-animation-duration: @duration;
+	-o-animation-iteration-count: @iteration-count;
+	-o-animation-direction: @direction;
+	-o-animation-timing-function: @timing-function;
+
+	animation-name: @name;
+	animation-duration: @duration;
+	animation-iteration-count: @iteration-count;
+	animation-direction: @direction;
+	animation-timing-function: @timing-function;
+}
+
+.keyframe-pulse {
+	0% {
+		.opacity(100);
+	}
+	100% {
+		.opacity(60);
+	}
+}
+
 .status-good {
 	border-color: @up-border;
 	background-color: @up-color;
@@ -18,6 +64,12 @@
 	border-color: @down-border;
 	background-color: @down-color;
 }
+
+@-webkit-keyframes pulse { .keyframe-pulse }
+@-moz-keyframes pulse { .keyframe-pulse }
+@-ms-keyframes pulse { .keyframe-pulse }
+@-o-keyframes pulse { .keyframe-pulse }
+@keyframes pulse { .keyframe-pulse }
 
 body {
 	text-align: center;
@@ -35,6 +87,10 @@ body {
 
 	&.degraded {
 		.status-bad;
+	}
+
+	&.down {
+		.animation(pulse, 2s, infinite, alternate, ease-in-out);
 	}
 }
 
