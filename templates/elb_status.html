@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Amazon ELB Status</title>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.min.css') }}" />
+</head>
+<body>
+<h1>Amazon ELB Status</h1>
+{% for lb in lbs %}
+	<div class="lb {{ lb.redundant|yesno('ok', 'degraded') }}">
+		<h2>{{ lb.name }}</h2>
+		<ul class="instances">
+			{% for instance in lb.instances %}
+				<li class="{{ instance.up|yesno('up', 'down') }}">{{ instance.id }}</li>
+			{% endfor %}
+		</ul>
+	</div>
+{% endfor %}
+</body>
+</html>
