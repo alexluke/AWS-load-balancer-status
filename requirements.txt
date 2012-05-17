@@ -1,2 +1,2 @@
-boto
-Flask
+boto==2.4.1
+Flask==0.8
