@@ -11,7 +11,7 @@
 		<h2>{{ lb.name }}</h2>
 		<ul class="instances">
 			{% for instance in lb.instances %}
-				<li class="{{ instance.up|yesno('up', 'down') }}">{{ instance.id }}</li>
+				<li class="{{ instance.up|yesno('up', 'down') }}">{{ instance.name }} <small>({{ instance.id }})</small></li>
 			{% endfor %}
 		</ul>
 	</div>
