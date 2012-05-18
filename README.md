@@ -39,7 +39,7 @@ from monitor import app as application
 
 Create an apache vhost file:
 
-```
+```apache
 <VirtualHost *>
 	ServerName example.com
 
