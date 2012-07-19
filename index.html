@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>AWS Load Balancer Status Page by banduin</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>AWS Load Balancer Status Page</h1>
+        <h2>A status page for monitoring instances attached to an elastic load balancer</h2>
+        <a href="https://github.com/banduin/AWS-load-balancer-status" class="button"><small>View project on</small>GitHub</a>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <h1>AWS Load Balancer Status</h1>
+
+<p>A status page for monitoring instances attached to an elastic load balancer.</p>
+
+<h1>Setup</h1>
+
+<p>Create a <code>settings.cfg</code> file like the following:</p>
+
+<div class="highlight">
+<pre><span class="n">ACCESS_KEY</span> <span class="o">=</span> <span class="s">'your_aws_access_key'</span>
+<span class="n">SECRET_KEY</span> <span class="o">=</span> <span class="s">'your aws_secret_key'</span>
+<span class="c"># A list of load balancers you want to monitor</span>
+<span class="n">LOAD_BALANCERS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s">'name_of_elb1'</span><span class="p">,</span>
+    <span class="s">'name_of_elb2'</span><span class="p">,</span>
+<span class="p">]</span>
+</pre>
+</div>
+
+
+<p>Create a virtualenv and install required packages:</p>
+
+<pre><code>$ virtualenv venv --distribute
+$ pip -E venv install -r requirements.txt
+</code></pre>
+
+<h1>Deploy</h1>
+
+<h2>mod_wsgi</h2>
+
+<p>Create an <code>application.wsgi</code> file:</p>
+
+<div class="highlight">
+<pre><span class="kn">import</span> <span class="nn">sys</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s">'/path/to/application'</span><span class="p">)</span>
+<span class="n">activate_this</span> <span class="o">=</span> <span class="s">'/path/to/app/venv/bin/activate_this.py'</span>
+<span class="nb">execfile</span><span class="p">(</span><span class="n">activate_this</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">__file__</span><span class="o">=</span><span class="n">activate_this</span><span class="p">))</span>
+<span class="kn">from</span> <span class="nn">monitor</span> <span class="kn">import</span> <span class="n">app</span> <span class="k">as</span> <span class="n">application</span>
+</pre>
+</div>
+
+
+<p>Create an apache vhost file:</p>
+
+<div class="highlight">
+<pre><span class="nt">&lt;VirtualHost</span> <span class="s">*</span><span class="nt">&gt;</span>
+    <span class="nb">ServerName</span> example.com
+
+    <span class="nb">WSGIDaemonProcess</span> lb_monitor <span class="k">user</span>=www-data <span class="k">group</span>=www-data threads=5
+    <span class="nb">WSGIScriptAlias</span> / <span class="sx">/path/to/app/application.wsgi</span>
+
+    <span class="nt">&lt;Directory</span> <span class="s">/path/to/app</span><span class="nt">&gt;</span>
+        <span class="nb">WSGIProcessGroup</span> lb_monitor
+        <span class="nb">WSGIApplicationGroup</span> %{GLOBAL}
+        <span class="nb">WSGIScriptReloading</span> <span class="k">On</span>
+        <span class="nb">Order</span> deny,allow
+        <span class="nb">Allow</span> from <span class="k">all</span>
+    <span class="nt">&lt;/Directory&gt;</span>
+<span class="nt">&lt;/VirtualHost&gt;</span>
+</pre>
+</div>
+
+
+<p>See the <a href="http://flask.pocoo.org/docs/deploying/">Flask deployment documentation</a> for other WSGI servers.</p>
+        </section>
+
+        <aside id="sidebar">
+          <a href="https://github.com/banduin/AWS-load-balancer-status/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/banduin/AWS-load-balancer-status/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/banduin/AWS-load-balancer-status"></a> is maintained by <a href="https://github.com/banduin">banduin</a>.</p>
+
+          <p>This page was generated by <a href="pages.github.com">GitHub Pages</a> using the Architect theme by <a href="http://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
+    </div>
+
+  
+  </body>
+</html>
